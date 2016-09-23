@@ -1,0 +1,83 @@
+
+/* ==========================================================================
+    BUTTONS
+   ========================================================================== */
+
+.btn,
+.button,
+button, 
+input[type='button']{
+    @extend %btn;
+}
+
+.button-group {
+    white-space: nowrap;
+    display: inline-block;
+    font-size: 0;
+    > li{
+        float:left;
+        display: inline;
+        position: relative;
+        &:first-child{
+        a{
+            border-top-left-radius: $radius;
+            border-bottom-left-radius: $radius;}
+    }
+        &:last-child{
+        a{
+            border-top-right-radius: $radius;
+            border-bottom-right-radius: $radius;
+        }
+    }   
+    }
+    a, button{
+            border-radius: 0px;
+            border:none;
+            text-decoration: none;  
+        }
+    button{
+        &:first-child{
+        border-top-left-radius: $radius;
+            border-bottom-left-radius: $radius;
+    }
+    &:last-child{
+      border-top-right-radius: $radius;
+      border-bottom-right-radius: $radius;
+    }
+    }
+    a + ul.dropdown-menu {
+           position: absolute;
+            top: 100%;
+            right: 0;
+            z-index: 1000;
+            display: none;
+            float: left;
+            min-width: 100px;
+            font-size: 14px;
+            text-align: left;
+            border: 0;
+            background: #23A8F5;
+            -webkit-background-clip: padding-box;
+            background-clip: padding-box;
+            border: 1px solid #ccc;
+            border: 1px solid rgba(0,0,0,.15);
+            border-radius: 0px 0px 4px 4px;
+            box-shadow :0 2px 5px 0 rgba(0, 0, 0, 0.26);
+          li {
+            display: block;
+            > a {
+              border-radius: 0;
+              display: block;
+              padding: 0;
+              color: #FAFAFA;
+              padding: 0 1.35em;
+              font-size: 16px;
+              line-height: 2.9em;
+              width: 100%;
+              text-align: center;
+            }
+          }
+        }
+    a.open + ul.dropdown-menu{display: block}
+    
+}

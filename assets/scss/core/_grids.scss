@@ -1,0 +1,65 @@
+// A list of unit names and corresponding widths required by Girder
+$units: 'half' 50%,
+        'third' 33.333%,
+        'two-thirds' 66.666%,
+        'fourth' 25%,
+        'three-fourths' 75%,
+        'fifth' 20%,
+        'two-fifths' 40%,
+        'three-fifths' 60%,
+        'four-fifths' 80%,
+        'sixth' 16.6666%,
+        'five-sixths' 83.3333%,
+        'golden-small' 38.2716%,
+        'golden-large' 61.7283%,
+        'whole' 100%;
+
+.container {
+    max-width: $max-width;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: $gutters;
+    padding-left: $gutters;
+}
+.row {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    max-width: 70rem;    
+    &#{--center} {
+        text-align: center;
+    }
+    &#{--right} {
+        text-align: right;
+    }
+    &#{--widthGutter} {
+        margin-right: -$gutters;
+        margin-left: -$gutters;
+    }
+}
+[class^="col-"] {}
+.cell {
+  display: inline-block;
+  font-size: 1rem;
+  text-align: left;
+  width: 100%;
+  vertical-align: top;
+  .row--widthGutter & {
+    padding-right: $gutters;
+    padding-left: $gutters;
+  }
+  &#{--center} {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@for $i from 0 through $columns - 1 {
+    .col-#{$i} {
+        //width: (($i / $columns)- 2 * $gutter-Row) * 100%  !important;
+        width: ($i / $columns) * 100%;
+        float:left;
+        @include box-sizing(border-box);
+      }  
+}

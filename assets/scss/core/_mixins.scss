@@ -1,0 +1,824 @@
+//////////////////////////////////////////////////////////////////////////
+// Utility Mixins and silent classes or placeholder selectors ////////////
+//////////////////////////////////////////////////////////////////////////
+
+
+@if $include-extras == true {
+	// Optional: classes to push units (.push-one to .push-four)
+	@include pushover-units;
+}
+// Only include these classes if the option exists
+@if $html-classes == true {
+	$units: (whole 100%), (half 50%), (third 33.3332%), (two-thirds 66.6665%), (fourth 25%), (three-fourths 75%), (fifth 20%), (two-fifths 40%), (three-fifths 60%), (four-fifths 80%), (sixth 16.6666%), (five-sixths 83.3333%), (golden-small 38.2716%), (golden-large 61.7283%);
+
+	@each $unit in $units {
+	  .#{nth($unit, 1)} {
+	    width: #{nth($unit, 2)};
+	    @extend .unit;
+	  }
+	}
+
+	.unit {
+		float: left;
+		padding: $gutters / 2;
+		width: 100%;
+
+		&:first-of-type {padding-left: $gutters;}
+		&:last-child {padding-right: $gutters;}
+
+		.#{$row-class} &:first-of-type {padding-left: 0;}
+		.#{$row-class} &:last-child {padding-right: 0;}
+	}
+
+	$gutterpercent: $gutters * $em-base / 100;
+	.push-one,
+	.push-two,
+	.push-three,
+	.push-four {
+		position: relative;
+	}
+	// We'll attempt to align with eights going up to half-page
+	.push-one { left: 12.5% + strip-unit($gutterpercent); }
+	.push-two { left: 25% + strip-unit($gutterpercent); }
+	.push-three { left: 37.5% + strip-unit($gutterpercent); }
+	.push-four { left: 50% + strip-unit($gutterpercent); }
+}
+
+
+@mixin unit($width:whole, $addgutters:true) {
+
+	@if $width == 'half' or $width == 'two-fourths' {
+		@extend %half;
+	}
+	@else if $width == 'third' or $width == 'two-sixths' {
+		@extend %third;
+	}
+	@else if $width == 'two-thirds' or $width == 'four-sixths' {
+		@extend %two-thirds;
+	}
+	@else if $width == 'fourth' {
+		@extend %fourth;
+	}
+	@else if $width == 'three-fourths' {
+		@extend %three-fourths;
+	}
+	@else if $width == 'fifth' {
+		@extend %fifth;
+	}
+	@else if $width == 'two-fifths' {
+		@extend %two-fifths;
+	}
+	@else if $width == 'three-fifths' {
+		@extend %three-fifths;
+	}
+	@else if $width == 'four-fifths' {
+		@extend %four-fifths;
+	}
+	@else if $width == 'sixth' {
+		@extend %sixth;
+	}
+	@else if $width == 'five-sixths' {
+		@extend %five-sixths;
+	}
+	@else if $width == 'golden-small' {
+		@extend %golden-small;
+	}
+	@else if $width == 'golden-large' {
+		@extend %golden-large;
+	}
+	@else if $width == 'whole' {
+		@extend %whole;
+
+		@if $use-breakpoint {
+			@include breakpoint($single-column) {
+				padding-right: 0;
+			}
+		}
+		@else {
+			@include media-query(10em, $small-breakpoint) {
+				padding-right: 0;
+			}
+		}
+	}
+	@else {
+		@warn '"#{$width}" is not a valid width for the unit mixin (try "half" or "three-fourths" instead). Defaulting to "whole" unit.';
+	}
+
+	// Remove the unit $gutters when specified
+	@if $addgutters == false {
+		@extend %removegutters;
+	}
+
+}
+@mixin row($isRelative: false, $row-padding:0) {
+	@if $isRelative {
+    position: relative;
+  }
+  @if $row-padding > 0 {
+		padding: $row-padding;
+	}
+  clear: both;
+  display: block;
+	// Automagic clearing for rows
+	&:after {clear: both;}
+	&:before, &:after {
+		display: table;
+		content: "";
+		line-height: 0;
+	}
+	@if $silent-classes == false {
+		// Remove nested outer gutters at css level
+		.#{$row-class} > :first-of-type {padding-left: 0;}
+		.#{$row-class} > :last-child {padding-right: 0;}
+	} @else if $reset-units == true {
+		@include media-query($small-breakpoint){
+			> :first-of-type {padding-left: 0;}
+			> :last-child {padding-right: 0;}
+		}
+	} @else {
+		> :first-of-type {padding-left: 0;}
+		> :last-child {padding-right: 0;}
+	}
+	// Option to add outer gutters back in to keep third+ units even
+	&.equal-units {
+		> :first-of-type {padding-left: $gutters / 2;}
+		> :last-child {padding-right: $gutters / 2;}
+	}
+}
+
+@mixin pushover-units {
+	@if $html-classes == false {
+		$gutterpercent: $gutters * $em-base / 100;
+		.push-one,
+		.push-two,
+		.push-three,
+		.push-four {
+			position: relative;
+		}
+		// We'll attempt to align with eights going up to half-page
+		.push-one { left: 12.5% + strip-unit($gutterpercent); }
+		.push-two { left: 25% + strip-unit($gutterpercent); }
+		.push-three { left: 37.5% + strip-unit($gutterpercent); }
+		.push-four { left: 50% + strip-unit($gutterpercent); }
+	}
+}
+@mixin grid-unit ($width, $addgutters) {
+	@if $silent-classes == false {
+		.#{$row-class} & {
+			float: left;
+			@if $addgutters == true {
+				padding: $gutters / 2;
+			}
+			width: $width;
+		}
+	}
+	@else {
+		float: left;
+		@if $addgutters == true {
+			padding: $gutters / 2;
+		}
+		width: $width;
+	}
+}
+@mixin responsive-unit($size:whole, $gutters:false) {
+	@each $unit in $units {
+		@if $size == nth($unit, 1) {
+			$length: length($unit);
+			$size: whole !default;
+
+			@for $i from 2 through $length {
+				// If it's the first item, override it
+				@if $i == 2 {
+					$size: nth($unit, $i);
+				}
+				// Else, join $size
+				@else {
+					$size: join($size, nth($unit, $i));
+				}
+			}
+			// Send this to our unit Mixin
+			@include grid-unit($size, $gutters);
+		}
+	}
+}
+@mixin media-query($breakpoint-size, $breakpoint-max:'') {
+  @if $breakpoint-max != "" and type-of($breakpoint-max) == 'number' {
+    @media only screen and (min-width:$breakpoint-size) and (max-width: $breakpoint-max) { @content; }
+  }
+  @else if $breakpoint-max != "" and type-of($breakpoint-max) == 'string' {
+    @if $breakpoint-max == "max-width" {
+      @media only screen and (max-width: $breakpoint-size) { @content; }
+    } @else {
+      @warn "Your second argument for the media query mixin is invalid. It accepts the string 'max-width' or a number value like '600px' (optional)."
+    }
+  }
+  @else {
+    @media only screen and (min-width: $breakpoint-size) { @content; }
+  }
+}
+
+@mixin container($max-width: $container-max-width, $margins: $container-margins) {
+		margin: $container-margins;
+		max-width: $container-max-width;
+}
+
+
+
+@mixin font-smoothing() {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  $opacity-ie: $opacity * 100;
+  filter: alpha(opacity=$opacity-ie); //IE8
+}
+
+@mixin clearfix() {
+  &:before, &:after { content: " "; display: table; }
+  &:after { clear: both; }
+  // Old IE
+  *zoom:1;
+}
+
+@mixin font-size($sizeValue: 1.8) {
+  $size: strip-unit($sizeValue);
+  font-size: ($size * $em-base);
+  font-size: $size + rem;
+}
+@mixin font-face($fontname: "", $fontfile: "", $path: "", $weightnames: "", $weightnos: "", $fontvariant: "") {
+    $totalnofonts: length($weightnames);
+    @if ($totalnofonts > 0) {
+        $path: $path + $fontfile;
+        $i: 0;
+        @while $i < $totalnofonts {
+            $weightnameidx: $i + 1;
+            $weightno: nth($weightnos, $weightnameidx);
+            $weightname: nth($weightnames, $weightnameidx);
+
+            @font-face {
+                font-family: "#{$fontname}";
+                src: url('#{$path}-#{nth($weightnames, $weightnameidx)}#{$fontvariant}.eot');
+                src:
+                    url('#{$path}-#{nth($weightnames, $weightnameidx)}#{$fontvariant}.eot?#iefix') format('embedded-opentype'),
+                    url('#{$path}-#{nth($weightnames, $weightnameidx)}#{$fontvariant}.woff') format('woff'),
+                    url('#{$path}-#{nth($weightnames, $weightnameidx)}#{$fontvariant}.svg##{$fontfile}#{$weightname}') format('svg'),
+                    url('#{$path}-#{nth($weightnames, $weightnameidx)}#{$fontvariant}.ttf') format('truetype');
+                font-weight: $weightno;
+                font-style: normal;
+            }
+            $i: $i + 1;
+        }
+    }
+}
+@mixin icon($position: before, $icon: false, $styles: true) {
+    @if $position == both {
+        $position: 'before, &:after';
+    }
+    // Either a :before or :after pseudo-element, or both, defaulting to :before
+    &:#{$position} {
+        @if $icon {
+            // A particular icon has been specified
+            content: "#{map-get($icons, $icon)}";
+        }
+        @if $styles {
+            // Supportive icon styles required
+            speak: none;
+            font-style: normal;
+            font-weight: normal;
+            font-variant: normal;
+            text-transform: none;
+            line-height: 1;
+            font-family: 'Icons' !important;
+            /* Better Font Rendering =========== */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        // Include any extra rules supplied for the pseudo-element
+        @content;
+    }
+}
+
+
+// Panel Mixin
+@mixin panel($bg:$panel-bg, $padding:$panel-padding, $filler:false) {
+
+  text-align: center;
+  font-size: .6em;
+  border-radius: 3px;
+
+  @if $bg {
+    $bg-lightness: lightness($bg);
+
+    border-style: solid;
+    border-width: 1px;
+    border-color: darken($bg, 15%);
+    margin-bottom: $panel-margin-bottom;
+    margin-top: 0;
+    padding: $padding $padding / 2;
+    background: $bg;
+
+    // We set the font color based on the darkness of the bg and if we are using filler content
+    @if $bg-lightness >= 50% and $filler == true        { h1,h2,h3,h4,p { color: $panel-font-color-alt; } }
+    @else if $bg-lightness >= 50% and $filler == true   { h1,h2,h3,h4,p { color: $panel-font-color; } }
+    @else if $filler == true {
+      h1,h2,h3,h4,p { color: $panel-font-color-alt;
+      line-height: 1; margin-bottom: emCalc(20px) / 2;
+      }
+    }
+    // Respect the padding, fool.
+    // &>:first-child { padding-top: 0; }
+    // &>:last-child { padding-bottom: 0; }
+  }
+}
+
+// Basic Mixin for text alignments
+// Usage: @include text-align(right);
+@mixin text-align($direction) {
+  @if $direction == left {
+    text-align: #{$direction};
+  }
+  @else if $direction == right {
+    text-align: #{$direction};
+  }
+  @else if $direction == center {
+    text-align: #{$direction};
+  }
+  @else if $direction == justify {
+    text-align: #{$direction};
+  }
+  @else {
+    @warn '"#{$direction}" is not a valid alignment for the text-align() mixin.';
+  }
+}
+
+// Only include utility classes if setting is set to true
+// Useful for classes in your HTML like: <p class="right text-right">Go Right!</h2>
+@if $html-classes == true or $include-extras == true {
+  // Utility classes for presentational markup
+  .left         { float: left; margin-right: .8em; }
+  .right        { float: right; margin-left: .8em; }
+  .hidden         { display: none !important; visibility: hidden; }
+  // Write out classes for text-alignment
+  @each $direction in left, right, center, justify {
+    .text-#{$direction} {text-align: #{$direction};}
+  }
+  .clear {
+    &:before, &:after { content:""; display:table; }
+    &:after {clear:both;}
+  }
+}
+
+// Mixin to show a baseline grid (Via Google Kit)
+// only visible when body has 'debug' class
+@mixin baseline-grid() {
+  position: relative;
+  &:after {
+    //display: none;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    z-index: 9;
+    // display: none;
+    background-image: -moz-linear-gradient(top, rgba(0,0,0,0) 95%, rgba(0,0,0,0.15) 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(95%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.15)));
+    background-image: -webkit-linear-gradient(top, rgba(0,0,0,0) 95%,rgba(0,0,0,0.15) 100%);
+    background-image: -o-linear-gradient(top, rgba(0,0,0,0) 95%, rgba(0,0,0,0.15) 100%);
+    background-image: -ms-linear-gradient(top, rgba(0,0,0,0) 95%,rgba(0,0,0,0.15) 100%);
+    background-image: linear-gradient(top, rgba(0,0,0,0.15) 95%,rgba(0,0,0,0.15) 100%);
+
+    @include prefix(background-size, 100% 26px);
+  }
+  .debug &:after {
+    display: block;
+    pointer-events: none;
+  }
+}
+
+// Manual prefixing of a property of your choice
+// Covers *most* practical uses.
+@mixin prefix($property,$value) {
+  $isTransform: nth($value, 1);
+  @if $property == transition and $isTransform == transform {
+  -webkit-#{$property}: -webkit-#{$value};
+     -moz-#{$property}: -moz-#{$value};
+      -ms-#{$property}: -ms-#{$value};
+  }
+  @else {
+  -webkit-#{$property}: $value;
+     -moz-#{$property}: $value;
+      -ms-#{$property}: $value;
+  }
+  #{$property}: $value;
+}
+
+// Layout and Flex utilities
+@mixin flexbox() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+@mixin flex($values...) {
+    @include prefix('flex',  $values);
+//  -webkit-box-flex: $values;
+//  -moz-box-flex:  $values;
+//  -webkit-flex:  $values;
+//  -ms-flex:  $values;
+//  flex:  $values;
+}
+@mixin flexorder($val) {
+  -webkit-box-ordinal-group: $val;
+  -moz-box-ordinal-group: $val;
+  -ms-flex-order: $val;
+  -webkit-order: $val;
+  order: $val;
+}
+
+// ---- Media Query Helpers
+// ---------------------------------
+// A Basic Media Query Mixin
+// Defaults to: 'min-width'. Pass a second value for min and max query.
+// @include media-query(600px, max-width) {
+//   font-size: 2.4em;
+// }
+
+// --- max-width only
+@mixin max-width($breakpoint-size) {
+  @include media-query ($breakpoint-size, "max-width") {
+    @content;
+  }
+}
+// --- min-width and max-width only
+@mixin min-max($breakpoint-size-min, $breakpoint-size-max) {
+  @include media-query ($breakpoint-size-min, $breakpoint-size-max) {
+    @if type-of($breakpoint-size-max) == 'number' {
+      @content;
+    } @else {
+      @warn "Your second argument for the min-max mixin is invalid. It needs a number value for this type of media query (like '600px')."
+    }
+  }
+}
+
+@mixin media-query($breakpoint-size, $breakpoint-max:"") {
+  @if $breakpoint-max != "" and type-of($breakpoint-max) == 'number' {
+    @media only screen and (min-width:$breakpoint-size) and (max-width: $breakpoint-max) { @content; }
+  }
+  @else if $breakpoint-max != "" and type-of($breakpoint-max) == 'string' {
+    @if $breakpoint-max == "max-width" {
+      @media only screen and (max-width: $breakpoint-size) { @content; }
+    } @else {
+      @warn "Your second argument for the media query mixin is invalid. It accepts the string 'max-width' or a number value like '600px' (optional)."
+    }
+  }
+  @else {
+    @media only screen and (min-width: $breakpoint-size) { @content; }
+  }
+}
+
+// --- ipad-retina (Optional: specify orientation)
+@mixin ipad-retina($orientation: all) {
+  $deviceMinWidth: 768px;
+  $deviceMaxWidth: 1024px;
+  $devicePixelRatio: 2;
+
+  @if $orientation == all {
+    @media only screen and (min-device-width: $deviceMinWidth) and (max-device-width: $deviceMaxWidth) and (-webkit-device-pixel-ratio: $devicePixelRatio) {
+      @content;
+    }
+  }
+  @else {
+    @media only screen and (min-device-width: $deviceMinWidth) and (max-device-width: $deviceMaxWidth) and (-webkit-device-pixel-ratio: $devicePixelRatio) and (orientation:#{$orientation}) {
+      @content;
+    }
+  }
+}
+
+@mixin box-sizing($box-model) {
+    @include prefix('box-sizing',  $box-model);
+}
+@mixin border-radius($radius) {
+    @include prefix('border-radius',  $radius);
+    background-clip: padding-box;  /* stops bg color from leaking outside the border: */
+}
+@mixin box-shadow($top, $left, $blur, $color, $inset: false) {
+  @if $inset {
+        @include prefix('box-shadow', inset $top $left $blur $color);
+  } @else {
+        @include prefix('box-shadow', $top $left $blur $color);
+  }
+}
+
+@mixin transition($values...) { 
+    $transitions: ();
+    @each $declaration in $values {
+        $prop: nth($declaration, 1);
+        $prop-opts: ();
+        $length: length($declaration);
+        @for $i from 1 through $length {
+            $prop-opts: append($prop-opts, nth($declaration, $i));   
+        }
+        $trans: ($prop, $prop-opts);
+        $transitions: append($transitions, $trans, comma);
+    }
+
+    -webkit-transition: trans-prefix($transitions, webkit);
+    -moz-transition: trans-prefix($transitions, moz);
+    -o-transition: trans-prefix($transitions, o);
+    transition: $values;
+}
+@mixin transition-property($property...) {
+    @include prefix('transition-property', $property);
+}
+@mixin transition-duration($duration...) {
+    @include prefix('transition-property',$duration);
+}
+@mixin transition-timing-function($timing...) {
+    @include prefix('transition-timing-function', $timing);
+}
+@mixin transition-delay($delay...) {
+    @include prefix('transition-delay', $delay);
+}
+
+@mixin transform($transforms) {
+    @include prefix('transform', $transforms);
+}
+@mixin rotate ($deg) {
+    @include transform(rotate(#{$deg}deg));
+}
+@mixin scale($scale) {
+    @include transform(scale($scale));
+} 
+@mixin transform-origin ($origin) {
+    @include prefix('transform-origin', $origin);
+}
+@mixin translate ($x, $y) {
+    @include transform(translate($x, $y));
+}
+
+
+@mixin button-size($padding-vertical, $padding-horizontal, $font-size, $line-height, $border-radius, $border-width, $border-style) {
+  padding: $padding-vertical $padding-horizontal;
+  font-size: $font-size;
+  line-height: $line-height;
+  border-radius: $border-radius;
+  border: $border-width $border-style;
+}
+@mixin no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+@mixin appearance($value){
+  @include prefix('appearance', $value);
+}
+@mixin button-variant($color, $background, $border) {
+  @include no-select;	
+  @include appearance(none);		
+  color: $color;
+  background-color: $background;
+  border-color: $border;
+
+  &:focus,
+  &.focus {
+	outline: none;  
+    color: $color;
+    background-color: darken($background, 10%);
+        border-color: darken($border, 25%);
+  }
+  &:hover {
+    color: $color;
+    background-color: darken($background, 10%);
+        border-color: darken($border, 12%);
+  }
+  &:active,
+  &.active,
+  .open > &.dropdown-toggle {
+    color: $color;
+    background-color: darken($background, 10%);
+        border-color: darken($border, 12%);
+
+    &:hover,
+    &:focus,
+    &.focus {
+      color: $color;
+      background-color: darken($background, 17%);
+          border-color: darken($border, 25%);
+    }
+  }
+  &:active,
+  &.active,
+  .open > &.dropdown-toggle {
+    background-image: none;
+  }
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &:hover,
+    &:focus,
+    &.focus {
+      background-color: $background;
+          border-color: $border;
+    }
+  }
+
+  .badge {
+    color: $background;
+    background-color: $color;
+  }
+}
+
+@mixin button-outline-variant($color) {
+  color: $color;
+  background-image: none;
+  background-color: transparent;
+  border-color: $color;
+
+  &:focus,
+  &.focus,
+  &:active,
+  &.active,
+  .open > &.dropdown-toggle {
+    color: #fff;
+    background-color: $color;
+        border-color: $color;
+  }
+  @include hover {
+    color: #fff;
+    background-color: $color;
+        border-color: $color;
+  }
+
+  &.disabled,
+  &:disabled,
+  fieldset[disabled] & {
+    &:focus,
+    &.focus {
+      border-color: lighten($color, 20%);
+    }
+    @include hover {
+      border-color: lighten($color, 20%);
+    }
+  }
+}
+
+
+//Extendable placeholders for our unit mixin
+%unit {
+	float: left;
+	padding: $gutters / 2;
+}
+%equal-units {
+	> :first-of-type {padding-left: $gutters / 2;}
+	> :last-child {padding-right: $gutters / 2;}
+}
+%removegutters {padding: 0;}
+
+%half {
+	width: 50%; 
+	@extend %unit; }
+%third { 
+	width: 33.3332%; 
+	@extend %unit; }
+%two-thirds { 
+	width: 66.6665%;
+	@extend %unit; }
+%fourth { 
+	width: 25%;
+	@extend %unit; }
+%three-fourths { 
+	width: 75%;
+	@extend %unit; }
+%fifth { 
+	width: 20%;
+	@extend %unit; }
+%two-fifths { 
+	width: 40%;
+	@extend %unit; }
+%three-fifths{ 
+	width: 60%;
+	@extend %unit; }
+%four-fifths  { 
+	width: 80%;
+	@extend %unit; }
+%sixth { 
+	width: 16.6666%;
+	@extend %unit; }
+%five-sixths { 
+	width: 83.3333%;
+	@extend %unit; }
+%golden-small  { 
+	width: 38.2716%;
+	@extend %unit; }
+%golden-large { 
+	width: 61.7283%;
+	@extend %unit; }
+%whole {
+	width: 100%;
+	padding: $gutters /2;
+}
+
+
+%clear {
+  &:before,
+  &:after {
+    content:"";
+    display:table;
+  }
+  &:after {
+    clear:both;
+  }
+}
+
+%row {@include row($row-padding)}
+%container {@include container($container-max-width, $container-margins);}
+%btn {
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;  
+    position: relative;
+    margin: 0;
+    @include button-variant(#FAFAFA, $secondary-color, $secondary-color);
+    @include button-size(0, 1.35em, 16px, 2.9em, 4px, 1px, solid);
+    @include transition(background-color 0.2s ease-in-out, color 0.2s ease-in-out, border 0.2s ease-in-out);
+    @include font-smoothing();
+}
+// List Reset
+%list-reset {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+@if $reset-units {
+  @if $use-breakpoint == true {
+    @include breakpoint($single-column) {
+      %unit {
+        // All units go full-width for a single-column layout
+        width: 100%;
+
+        // Reset push for small viewports
+        left: 0;
+
+        // Reset horizontal gutters
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+  }
+  @else {
+    @include media-query(10em, $small-breakpoint) {
+      %unit {
+        width: 100%;
+        left: 0;
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+  }
+}
+
+@if $silent-classes == false {
+	.container {
+		margin: $container-margins;
+		max-width: $container-max-width;
+	}
+	// Rows can be cleared using a class of your choice if preferred:
+	.#{$row-class} {
+		padding: $row-padding;
+		clear: both;
+		display: block;
+		&:after {clear: both;}
+		&:before, &:after {
+			display: table;
+			content: "";
+			line-height: 0;
+		}
+
+		@if $reset-units == true {
+			@include media-query($small-breakpoint){
+				> :first-of-type {padding-left: 0;}
+				> :last-child {padding-right: 0;}
+			}
+		} @else {
+			> :first-of-type {padding-left: 0;}
+			> :last-child {padding-right: 0;}
+		}
+
+		&.no-gutters, &.no-padding {padding: 0;}
+	}
+}
+*, *:before, *:after {
+  @include prefix(box-sizing, border-box);
+}

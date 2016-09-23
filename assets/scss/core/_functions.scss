@@ -1,0 +1,118 @@
+//////////////////////////////
+// Useful Mixins and Functions
+
+// Pass pixels and get ems with this emCalc(#px)
+@function emCalc($pxWidth) {
+	@return $pxWidth / $em-base * 1em;
+}
+
+// Creating rems and pixels
+@function remCalc($pxWidth) {
+	@return $pxWidth / $em-base * 1rem;
+}
+
+// Calculate percentage values using the target ÷ context formula
+@function percentCalc($target, $context) {
+	@return $target / $context * 100%;
+}
+
+// Strip units from values sent to other mixins
+@function strip-unit($num) {
+	@return $num / ($num * 0 + 1);
+}
+
+
+
+//@function emCalc($values, $base-value: $rem-base) {
+//  $remValues : remCalc($values, $base-value: $rem-base);
+//  $max: length($remValues);
+//
+//  @if $max == 1 { @return strip-unit(nth($remValues, 1)) * 1em; }
+//
+//  $emValues: ();
+//  @for $i from 1 through $max {
+//    $emValues: append($emValues, strip-unit(nth($remValues, $i)) * 1em);
+//  }
+//  @return $emValues;
+//}
+//
+//
+//// Converts "px" to "em" using the ($)em-base
+//@function convert-to-em($value, $base-value: $rem-base)  {
+//    $value: strip-unit($value) / strip-unit($base-value) * 1em;
+//    @if ($value == 0em) { $value: 0; } // Turn 0em into 0
+//    @return $value;
+//}
+//
+//// Working in ems is annoying. Think in pixels by using this handy function, em-calc(#)
+//// Just enter the number, no need to mention "px"
+//@function em-calc($values, $base-value: $rem-base) {
+//    $max: length($values); // Get the total number of parameters passed
+//
+//    // If there is only 1 parameter, then return it as an integer.
+//    // This is done because a list can't be multiplied or divided even if it contains a single value
+//    @if $max == 1 { @return convert-to-em(nth($values, 1), $base-value); }
+//
+//    $emValues: (); // This will eventually store the converted $values in a list
+//    @for $i from 1 through $max {
+//        $emValues: append($emValues, convert-to-em(nth($values, $i), $base-value));
+//    }
+//    @return $emValues;
+//}
+
+//@function unfoldTransition ($transition) {
+//  // Default values
+//  $property: all;
+//  $duration: .2s;
+//  $easing: null; // Browser default is ease, which is what we want
+//  $delay: null; // Browser default is 0, which is what we want
+//  $defaultProperties: ($property, $duration, $easing, $delay);
+//
+//  // Grab transition properties if they exist
+//  $unfoldedTransition: ();
+//  @for $i from 1 through length($defaultProperties) {
+//    $p: null;
+//    @if $i <= length($transition) {
+//      $p: nth($transition, $i)
+//    } @else {
+//      $p: nth($defaultProperties, $i)
+//    }
+//    $unfoldedTransition: append($unfoldedTransition, $p);
+//  }
+//
+//  @return $unfoldedTransition;
+//}
+//@mixin transition($transitions...) {
+//  $unfoldedTransitions: ();
+//  @each $transition in $transitions {
+//    $unfoldedTransitions: append($unfoldedTransitions, unfoldTransition($transition), comma);
+//  }
+//  
+//  -webkit-transition: $unfoldedTransitions;
+//  transition: $unfoldedTransitions;
+//}
+
+@function prefix($property, $prefixes: (webkit moz o ms)) {
+    $vendor-prefixed-properties: transform background-clip background-size;
+    $result: ();
+    @each $prefix in $prefixes {
+       @if index($vendor-prefixed-properties, $property) {
+         $property: -#{$prefix}-#{$property}
+       }
+       $result: append($result, $property);
+    }
+    @return $result;
+}
+@function trans-prefix($transition, $prefix: moz) {
+    $prefixed: ();
+    @each $trans in $transition {
+        $prop-name: nth($trans, 1);
+        $vendor-prop-name: prefix($prop-name, $prefix);
+        $prop-vals: nth($trans, 2);
+        $prefixed: append($prefixed, ($vendor-prop-name $prop-vals), comma);
+    }
+
+    @return $prefixed;
+}
+
+

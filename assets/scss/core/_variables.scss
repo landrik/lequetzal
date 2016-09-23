@@ -1,0 +1,97 @@
+// GENERAL
+$em-base           : 16px !default;
+
+
+$variant-height    : 1.5rem;
+$radius            : 4px;
+$reset-units       : true !default;
+$indent-amount     : 30px;
+$silent-classes    : false !default;
+$include-extras    : false !default;
+$html-classes      : false !default;
+
+// GRIDS
+$gutters           : emCalc(30px);
+$container-max-width : none !default;
+$container-margins : 0 auto !default;
+$row-class         : 'row' !default;
+$row-padding       : 0 !default;
+
+$columns           : 12;
+$max-width         : 1200px;
+//$gutter-Row        : 15px;
+
+//$layout-margin-width: $max-width + $gutters * 2;
+//$percent-margin:$gutters /$layout-margin-width;
+
+// FONTS
+//== Typography
+//
+////## Font, line-height, and color for body text, headings, and more.
+
+//$helvetica: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+//$brandon: "brandon", "Futura", "Sans-Serif";
+//$monospace: "Bitstream Vera Sans Mono", Consolas, Courier, monospace;
+//$verdana: Verdana, Geneva, sans-serif;
+
+$Avenir : "AvenirNext", "Helvetica Neue", sans-serif;
+$base-font-size: $em-base !default;
+
+// The font sizes for h1-h6.
+$h1-font-size: 2.8   * $base-font-size;
+$h2-font-size: 1.8   * $base-font-size;
+$h3-font-size: 1.17  * $base-font-size;
+$h4-font-size: 1     * $base-font-size;
+
+
+$base-font-family     : $Avenir;
+$headings-font        : $base-font-family;
+//$girder-font-family   : lato, source-sans-pro, "Helvetica", sans-serif;
+
+// COLORS
+$white: #ffffff;
+$black: #000000;
+$gray: #8e8e8e;
+$black_30: darken($black, 3%);
+$white_50: lighten($white, 5%);
+
+
+
+$color-primary:     #1e1e1e;
+$color-accent:      #9aca40;
+$color-secondary:   #23A8F5;
+$color-foreground:  #798ca7;
+$color-background:  #dee5e8;
+$color-shade-amount: 15%;
+$border-color:      #cecece;
+
+$body-bg             : #ffffff;
+$base-font-color     : #333333;
+
+$primary-color: $color-primary;
+$secondary-color: $color-secondary;
+$primary-content-text-color: darken(#8e8e8e, 4%);
+$secondary-content-text-color: #8e8e8e;
+
+// LINKS
+$linkColor	         : #72CEE7;
+$linkHoverColor      : #daf7fe;
+$lightText			 : #a6a6a6;
+$highlightColor      : #fffac0;
+
+// PANELS
+$panel-bg:              darken(#fff, 7%) !default;
+$panel-border-color:    darken($panel-bg, 15%) !default;
+$panel-margin-bottom:   0 !default;
+$panel-padding:         emCalc(20px) !default;
+$panel-font-color:      #333 !default;
+$panel-font-color-alt:  #fff !default;
+
+// BREAKPOINTS
+$small-breakpoint  : emCalc(640px)  !default;
+$medium-breakpoint : emCalc(1024px) !default;
+$large-breakpoint  : emCalc(1440px) !default;
+$xlarge-breakpoint : emCalc(1920px) !default;
+$use-breakpoint    : false !default;
+
+

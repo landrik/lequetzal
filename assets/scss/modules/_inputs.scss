@@ -1,0 +1,337 @@
+// Placeholder Mixin
+// ====================================
+.control-group{
+  background-color: white;
+  &:first-of-type{padding-top: 20px;}
+}
+
+$pseudo-placeholder: "::-webkit-input-placeholder" "::-moz-placeholder" ":-ms-input-placeholder" "::placeholder";
+
+@mixin placeholder {
+  @each $pseudo in $pseudo-placeholder {
+    @at-root #{&}#{$pseudo} {
+      @content
+    }
+  }
+}
+
+
+// Theme Config
+// ====================================
+
+$input-layout-theme: (
+  border:1px solid #F0F3F5,
+  radius:1px,
+  input-padding: 10px 25px,
+  bg: #ffffff,
+  label-bg: #ffffff,
+  label-color: #A7B5C7,
+  error-color: #E82C0C,
+  placeholder-color: #B9E0D6,
+  success-color: #23A8F5,
+  
+  select-arrow: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAKCAYAAACALL/6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHo+AACAQQAA+MoAAIC0AAB48QAA9RwAADw3AAAbzhlfIT4AAACJSURBVHjajNAxCsJAEEbhb5cU4i0sbHIaL6IQTxFPo4VeROwXQs4gKW1cWJZEM90wj5l5f0jDeMXBunqENIw7vLD9A09oIxL6FdsvSCENI2zwxH4BTmgxxeJc92P76cuIpRBuc6K45yZWwzPeleixBOLMr30tWgJZuqwcQJNFy2GzkHeHUMPwGQChFSPmzlJ1WgAAAABJRU5ErkJggg==',
+  select-padding: 10px 25px,
+  select-size: 100%,
+  
+  radio-input-radius: 80%,
+  radio-input-unit: 20px,
+  radio-input-spacing: 20px * 1.125,
+  radio-bg: #fff,
+  radio-txt-color: $color-foreground,
+
+  radio-checked-custom: (background: transparent),
+  radio-checked: #222233,
+  radio-checked-focus: $color-foreground,
+  font-family: 'AvenirNext',
+  
+);
+
+//checkbox
+// ====================================
+
+$font-size:1.25em; // adjust accordingly
+$ratio: 1.15; // adjust accordingly
+$size: $ratio + em;
+$ratio: $ratio;
+$gutter: 5px; // adjust accordingly
+$stroke-dash: 270;
+$radius:$gutter/2;
+$stroke: (
+  thickness: $gutter/2,
+  style: solid,
+  color: lighten($color-foreground, 25%)
+);
+$mark-ischecked: (
+  stroke-dashoffset: 0
+);
+//$label-ischecked: ();
+$svg-ischecked: (background: transparent);
+
+
+@function input-layout($key) {
+  @return map-get($input-layout-theme, $key);
+}
+
+
+// Required Styles
+// ====================================
+
+.input-layout {
+  display: inline-flex;
+  position: relative;
+  width: 100%;
+  clear: left;
+  padding-bottom: 20px;
+  font-family: input-layout(font-family);
+  background: input-layout(bg);
+  .input-field{
+        @extend %half;
+    }    
+}
+
+.input-layout input[type]:not([type=checkbox]){
+  width: 100%;
+  color: input-layout(label-color);
+  font-size: 19px;
+  line-height: 21px;
+  border:0px;
+  border-bottom: input-layout(border);
+  border-radius: input-layout(radius) - 1;
+  box-sizing: border-box;
+  display: inline-block;
+  outline: 0;
+  padding: input-layout(input-padding);
+  background: input-layout(bg);
+  @include transition(transform 225ms ease-in-out);
+  @include appearance(none);
+  &:empty:valid + label {color: input-layout(success-color);}
+  &:valid + label {color: input-layout(success-color);}
+  &:invalid {
+    background: input-layout(error-color);
+    color: white;
+  }
+  &:invalid + label {
+    &:after { background: input-layout(error-color); }
+    color: white;
+  }
+
+  @include placeholder {color: input-layout(placeholder-color); }
+  + label {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: input-layout(input-padding);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto;
+    background-color: white;
+    color: input-layout(label-color) !important;
+    text-transform: uppercase;
+    font-weight: bold;
+    @include translate(0%, -10%);
+    @include transition(transform 225ms cubic-bezier(0.23, 1, 0.32, 1));
+//    &:before,
+//    &:after {
+//      content: "";
+//      position: absolute;
+//      right: 0;
+//      left: 0;
+//      z-index: -1;
+//      @include transition(transform 225ms ease-in-out)
+//    }
+//    &:before { @include translate(0%, -100%) }
+//    &:after {
+//      top: 0;
+//      bottom: 0;
+//      background: input-layout(label-bg);
+//    }
+  }
+}
+
+.input-layout input[type]:not([type=checkbox]):focus,
+.input-layout input[type]:not([type=checkbox]).active{
+  &:empty:valid + label {
+    color: input-layout(success-color) !important;
+  }
+  &:invalid + label {
+    color: input-layout(error-color);
+  }
+  + label {
+    border: none;
+    background-color: transparent;
+//    @include scale(0.75);
+    @include transform(translate(-9%, -50%) scale(0.75));
+    //background: input-layout(label-bg);
+    width: auto;
+    left: 0px;
+//    &:after {
+//      @include translate(50%, 0%);
+//    }
+  }
+}
+
+select {
+  border: 0px;
+  border-bottom: input-layout(border);
+  border-radius: input-layout(radius) - 1;
+  display: inline-block;
+  outline: 0;
+  cursor: pointer;
+  padding: input-layout(select-padding);
+  width: input-layout(select-size);
+  line-height: 24px;
+  color: #A7B5C7;
+  font-size: 19px;
+  line-height: 21px;
+  @include appearance(none);
+  @media screen and (-webkit-min-device-pixel-ratio: 0) {background: transparent url(#{input-layout(select-arrow)}) no-repeat right 5% top 50%;}
+  &:focus,
+  &:active{
+    outline: none;
+    + label {
+        border: none;
+        background: input-layout(label-bg);
+        width: auto;
+        left: 15px;
+        padding: 0 9px;
+        @include translate(0%, -50%);
+        &:after {@include translate(0%, 50%);}
+    }
+  }
+  + label{
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: input-layout(input-padding);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #fff;
+    width: auto;
+    color: input-layout(label-color) !important;
+    text-transform: uppercase;
+    font-weight: bold;
+    @include translate(0%, 0%);
+    @include transition(transform 225ms ease-in-out all);
+  }
+}
+
+.input-control {
+  cursor: pointer;
+  display: inline-block;
+  padding-left: input-layout(radio-input-spacing)* 1.25;
+  position: relative;
+  font-family: input-layout(font-family);
+  font-size: input-layout(radio-input-unit);
+  font-weight: 100;
+  line-height: input-layout(radio-input-spacing);
+  color: input-layout(radio-txt-color);
+  input[type='radio'] {
+    position: absolute;
+    width: auto !important;
+    z-index: 1;
+    opacity: 0;
+  }
+  
+  &__indicator {
+    border-radius: input-layout(radio-input-radius);
+    display: block;
+    height: input-layout(radio-input-unit);
+    position: absolute;
+    top: 0;
+    left: 0;
+    user-select: none;
+    width: input-layout(radio-input-unit);
+    text-align: center;
+    background-color: input-layout(radio-bg);
+    background-size: 50% 50%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border: 2px solid #ACB9CA;
+  }
+  &.radio,
+  &.checkbox{
+    &:first-of-type {
+      margin-left: 25px;
+    }
+    input[type='radio']:focus ~ .input-control__indicator,
+    input[type='radio']:active ~ .input-control__indicator {
+      @each $key, $value in input-layout(radio-checked-custom) {
+        #{$key} : #{$value};
+      }
+    }
+    input[type='radio']:checked ~ .input-control__indicator {
+      &:after {
+        border-radius: input-layout(radio-input-radius);
+        content: "";
+        display: block;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        @include scale(0.7);
+        @include transform-origin(center center);
+        width: 100%;
+        background: input-layout(radio-checked-focus);
+      }
+    }
+    input[type="checkbox"] {
+        width: $size;
+        height: $size;
+        font-size: $font-size;
+        line-height: $ratio;
+        display:inline-flex;
+        align-items: center;
+        flex-direction: row-reverse;
+        position: absolute;
+        left: 0;  
+        opacity: 0;
+        cursor: pointer;
+        color: $color-foreground;
+        & ~ svg {
+          width: $size;
+          height: $size;
+          position: absolute;
+          left: 0;
+          top: 0;
+          border: zip(map-values($stroke)...);
+          border-radius:$gutter/2;
+          margin-right: $gutter;
+          path {
+            transition: stroke-dashoffset 440ms cubic-bezier(.69,.35,.63,.84);
+            fill: none;
+            stroke:$color-foreground;
+            stroke-dasharray: $stroke-dash;
+            stroke-dashoffset: $stroke-dash;
+            stroke-width: $gutter*5;
+          }
+        }
+        &:focus ~ svg,
+        &:checked ~ svg {
+          @each $key, $value in $svg-ischecked {
+            #{$key}: #{$value};
+          }
+        }
+        &:checked ~ svg path {
+          @each $key, $value in $mark-ischecked {
+            #{$key}: #{$value};
+          }
+        }
+      }
+      
+  }
+
+}
+
+
+
+// Required Styles
+// ====================================
+
+

@@ -1,0 +1,391 @@
+////////////////////////////////
+// Styles for an example site using Girder.
+// You can use this as a reference guide to get started.
+// Import Girder with its main partial
+// Optional: overwrite Girder gutters in ems before importing (Default 1.25em = 20px)
+////////////////////////////////
+
+@import "core/base";
+
+
+
+//button-size(0, 1.35em, 16px, 2.9em, 4px, 1px, solid)
+
+
+/* /////////////////////////////////////// */
+/*  Girder Site & Example Styles  /////// */
+/* ///////////////////////////////////// */
+
+body {
+	background: $body-bg;
+	color: $base-font-color;
+	font-family: $base-font-family;
+	font-size: $base-font-size;
+	line-height: 1.5em;
+	margin: 0;
+	-webkit-font-smoothing: antialiased;
+}
+html, body, .container, .content{height: 100%;}
+
+h1, h2, h3, h4 {margin-bottom: .4em;}
+h3 {margin-top: .4em;}
+h1 {
+	font-size: $h1-font-size;
+	line-height: 1.60714em;
+	margin-top: 0.53571em;
+}
+h2 {
+	font-size: $h2-font-size;
+	line-height: 1.66667em;
+	margin-top: 0.83333em;
+}
+p {margin: 1em 0 1.5em;}
+a {  
+    @include transition(all, 0.3s, ease-in-out);
+	&:link, 
+    &:visited {color: $linkColor;}
+	&:hover, 
+    &:active {color: $linkHoverColor;}
+}
+img {border: 0;}
+
+
+.wrap {
+  height: 100%;
+  font-size: 14px;
+  font-family: $base-font-family;
+  display: inline-table;
+  min-height: 100%;
+  @include baseline-grid;
+  #main {
+    background: #F0F3F5;
+    padding: 0px 4%;
+    padding-top: 32px;
+    article {
+      width: 100%;
+      position: relative;
+      margin-bottom: 65px;
+      overflow: hidden;
+      padding: 5px;
+      display: inline-block;
+    }
+  }
+  &:after {height: 100%;}
+  .sub-title {color: #a6a8ab}
+  .left {float: left}
+  .right {float: right}
+}
+
+.section-title {
+  color: darken($color-background, 25%);
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(139, 158, 182, 0.72);
+  line-height: 30px;
+  font-weight: 100;
+  position: relative;
+  padding-top: 0;
+  margin-top: 0;
+  padding-bottom: 10px;
+  span {
+    position: absolute;
+    right: 10px;
+  }
+}
+
+.panel {
+    width: 100%;
+    display: inline-block;
+    dl {
+      width: 20%;
+      display: inline-block;
+      overflow: hidden;
+      clear: both;
+      float: left;
+      dt {
+        font-weight: bold;
+        width: 40%;
+        float: left;
+        margin-bottom: 5px;
+        clear: left;
+    }
+      dd {
+        width: 59%;
+        float: right;
+        margin: 0;
+    }
+      + h1,
+      + .title{
+        width: 80%;
+        float: left;
+        margin-top: 14px;
+        margin-bottom: 0;
+        padding: 11px 0 0;
+    
+        &.page{font-size: 36px}
+        &.section{font-size: 30px}
+        &.subsection{font-size: 24px}
+        &.menu{font-size: 16px}
+    }
+  }
+    h5 {
+        margin: 0;
+        text-transform: uppercase;
+        color: #8B9EB6;
+    }
+}
+
+ul.side-nav {
+  padding: 0;
+  margin:0; 
+}
+ul.side-nav li {
+  list-style: none;
+  margin: 0;
+  border-left: 4px solid transparent; 
+}
+ul.side-nav li:hover {border-color: $color-foreground; }
+ul.side-nav li li,
+ul.side-nav li li:hover {border: none; }
+ul.side-nav li a {
+  letter-spacing: 0.0075em;
+  -webkit-font-smoothing: antialiased;
+  border-bottom: none;
+  color: darken($color-background, 25%);
+  padding: 0.25em 2.5em;
+  background-color: transparent; 
+}
+ul.side-nav li a:hover {
+  background-color: #e4e6ee;
+  color: #121e21; 
+}
+ul.side-nav li.divider {border: none; }
+ul.side-nav li.heading {
+  font-size: 18px;
+  text-transform: none; 
+  display: inherit
+}
+ul.side-nav li.heading a {padding: 0.25em 1.5em; }
+ul.side-nav li ul{margin: 0 0 0 0.85em; padding: 0; display: none;}
+ul.side-nav li.active ul{display: block}
+ul.side-nav li ul li{width:100%;font-size: 16px}
+ul.side-nav li ul li a{text-transform: lowercase}
+
+
+
+
+/* ////////////////////////////////////////////////// */
+/*   UI Style Guide Site & Typography Styles  /////// */
+/* ///////////////////////////////////////////////// */
+
+.typograpy {
+	h1 {
+		font-size: 90px;
+		line-height: 143px;
+		color: $color-foreground;
+		margin-bottom: 0;
+	}
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		color: $color-foreground;
+		li {
+			position: relative;
+			margin: 0 0 5px 0;
+			span {
+				width: 138px;
+				position: relative;
+				display: inline-block;
+			}
+		}
+	}
+}
+.tg_title {
+	font-size: 23px;
+	font-weight: bold;
+	line-height: 14px;
+}
+.tg_subheader {
+	font-size: 17px;
+	line-height: 49px;
+}
+
+/* ////////////////////////////////////////////////// */
+/*   UI Style Guide Site & list Styles  /////// */
+/* ///////////////////////////////////////////////// */
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    li {
+        display: inline-block; 
+        a {
+            display: block;
+            text-decoration: none;
+        }
+     }
+  }
+/* ////////////////////////////////////////////////// */
+/*   UI Style Guide Site & Icons Styles  /////// */
+/* ///////////////////////////////////////////////// */
+.icons .panel span {
+    padding: .5em;
+    line-height: 2;
+    font-size: 20px;
+    color: #8b9eb6;
+}
+
+
+.dateRangeWrapper:after {
+    position:absolute; 
+    content: '';
+    right:30px; 
+    top:2px; 
+    font-family:"Icons"; 
+    content:"\f117"; 
+    font-size:1.429rem; 
+    line-height:1.714rem; 
+    pointer-events:none;
+    background: red
+}
+
+/* ////////////////////////////////////////////////// */
+/*   UI Style Guide Site & Tables Styles  /////// */
+/* ///////////////////////////////////////////////// */
+
+
+.table-actions-column .button-group{float: right}
+
+
+
+ul, ol {
+font-size:1.3em;
+margin:0 0 1.3em 2em;
+}
+
+li {
+margin-bottom:.4em;
+}
+
+blockquote {
+padding-left:1em;
+border-left:3px solid #999;
+margin:2.5em 2em;
+  p {
+  font:italic 1.2em/1.6 Georgia, "Times New Roman", Times, serif;
+  }
+}
+
+//// 6.
+//// Media Queries
+////
+//
+//// medium and smaller
+////
+@media screen and (max-width: 60rem) {
+    [role='header'], [role='main']{
+      width:100%;
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border: none;
+      h1 {
+        background-size: cover;
+        img {
+          margin: 0.75em auto;
+          max-height: 55px;
+          width: auto;
+        }
+      }
+      ul.side-nav {
+        li,
+        li.heading {
+          float: left;
+          width: calc(100%/5);
+          border: none;
+          background: white;
+          a {
+            line-height: 3;
+            text-align: center;
+            border: none;
+            padding: 0.5em 0;
+          }
+          &.active {
+            background: lighten($white, 5%);
+            ul {
+              display: none;
+            }
+          }
+          &:first-child {
+            padding-top: 0;
+          }
+        } 
+    }
+      * > div {width:100%}
+  
+    }
+  
+  
+  .palette {
+    display: inline-block;
+	li {
+		width: 100%;
+        height: 80px;
+		margin: 0;
+        border-radius: 0px;
+        box-shadow: none;
+        box-sizing: border-box;
+        &:before {
+          background-color: white;
+          font-weight: bold;
+          color: gray;
+        }
+        &:after {
+          padding-top: 1.5rem;
+          font-size: 70%;
+          color: gray;
+        }
+        @each $color-key, $color-variants in $color-palette {
+          $base-color-value: map-get($color-variants, 'base');
+          &.#{$color-key} {
+            background-color: transparent;
+            &:before { content: "#{$color-key}"; }
+            &:after { content: "#{$base-color-value}"; }
+            $variant-gradient: (unquote("to bottom"),);
+            $index: 0;
+            @each $variant-name, $variant-value in $color-variants {
+              $variant-gradient: append($variant-gradient, $variant-value $index * $variant-height);
+              $index: $index + 1;
+              $variant-gradient: append($variant-gradient, $variant-value $index * $variant-height);
+            }
+
+            .variants {
+              border: none;
+              position: absolute;
+              height: $variant-height * length($color-variants);
+              width: $variant-height * length($color-variants);
+              left: 0;
+              background: linear-gradient(#{$variant-gradient});
+            }
+            &:before, &:after {
+              border-top:0;
+              box-sizing: border-box;
+              text-align: left;
+              height: $variant-height * length($color-variants);
+              top: 0;
+              left: $variant-height * length($color-variants);
+            }
+          }
+        }
+      
+        
+}
+  
+  }
+}
+  
+//
+//// small
+////
+@media screen and (max-width: 40rem) {}
+    
