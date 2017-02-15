@@ -1,5 +1,6 @@
 system-config.js*
 app/**/*.js
 app/**/*.map
-node_modules
+node_modules/
 build/*
+lequetzal/
