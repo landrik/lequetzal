@@ -1,4 +1,8 @@
 
+
+<md-toolbar>
+  <a [routerLink]='["/projects/new"]' md-raised-button> New Project</a>
+</md-toolbar>
 <!--h1 *ngFor='let project of projects'> {{ project.name }}</h1-->
 <div *ngFor='let projPair of projects | pair' class='project-pair'>
   <project-summary [project]='myProj' *ngFor='let myProj of projPair'></project-summary>

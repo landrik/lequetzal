@@ -46,7 +46,7 @@ const makeMessage = (attrs, task, user) => {
   return msg;
 };
 
-const authenticateLogin = (username, password) => {
+const authenticateLogin = ({ username, password }) => {
   let user = USERS.filter(u => u.username === username)[0];
   return (user && user.password === password) ? user : false;
 };
