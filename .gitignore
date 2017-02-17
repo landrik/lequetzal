@@ -1,9 +1,0 @@
-bs-config.js*
-server.js*
-app/**/*.js
-app/**/*.map
-node_modules/
-build/*
-lequetzal/
-.DS_Store
-.gitignore*
