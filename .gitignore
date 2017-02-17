@@ -1,4 +1,5 @@
-system-config.js*
+bs-config.js*
+server.js*
 app/**/*.js
 app/**/*.map
 node_modules/
